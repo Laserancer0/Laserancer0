@@ -143,8 +143,17 @@ function GiveCardPieces(game)
 	end
 	Mod.PlayerGameData = playerData;
 end
-
-function DiscardCards (game) 
+function OpenWarning (game)
+	local playerData = Mod.PlayerGameData;
+	for _,gp in pairs(filter(game.Game.PlayingPlayers, function(gp) return not gp.IsAI; end)) do
+		if (playerData[gp.ID] == nil) then
+			playerData[gp.ID] = {};
+		end
+		playerData[gp.ID].showWarning = true;
+	end
+	Mod.PlayerGameData = playerData;
+end	
+function DiscardCards (game)
 	local playerData = Mod.PlayerGameData;
 
 	for _,gp in pairs(filter(game.Game.PlayingPlayers, function(gp) return not gp.IsAI; end)) do
@@ -228,4 +237,5 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	DiscardCards(game);
 	GiveCardPieces(game);
 	CountCards(game);
+	OpenWarning(game);
 end

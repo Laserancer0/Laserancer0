@@ -33,6 +33,7 @@ function Server_StartGame(game, standing)
 			if (playerData[gp.ID].otherCardsUsed == nil) then
 				playerData[gp.ID].otherCardsUsed = 0;
 			end
+			playerData[gp.ID].showWarning = true;
 		end
 	end
 	Mod.PlayerGameData = playerData;

@@ -21,10 +21,13 @@ function Server_StartDistribution(game, standing)
 				playerData[gp.ID].canGetCards = 0;
 			end
 			if (playerData[gp.ID].otherCardsCount == nil) then
-				playerData[gp.ID].otherCardsCount = -1;
+				playerData[gp.ID].otherCardsCount = 0;
 			end
 			if (playerData[gp.ID].otherCardsUsed == nil) then
 				playerData[gp.ID].otherCardsUsed = 0;
+			end
+			if (playerData[gp.ID].showWarning == nil) then
+				playerData[gp.ID].showWarning = false;
 			end
 		end
 	end
