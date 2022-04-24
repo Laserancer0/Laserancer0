@@ -55,9 +55,13 @@ function CountCards(game)
 			playerData[gp.ID].numPieces = playerData[gp.ID].numPieces % Mod.Settings.piecesInCard;
 		end
 		local cardCount = 0;
-		for _,card in pairs(game.ServerGame.LatestTurnStanding.Cards[gp.ID].WholeCards) do
-			cardCount = cardCount +1;
-		end
+		for _, card in pairs(game.ServerGame.LatestTurnStanding.Cards) do
+            if (card.ID ==gp.ID) then
+                for _, WholeCard in pairs(card.WholeCards) do 
+                    cardCount = cardCount +1;
+                end
+            end
+        end
 		playerData[gp.ID].otherCardsCount = cardCount;
 	end
 	Mod.PlayerGameData = playerData;
