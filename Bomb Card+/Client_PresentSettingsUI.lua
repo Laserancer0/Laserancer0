@@ -16,5 +16,6 @@ function Client_PresentSettingsUI(rootParent)
 			UI.CreateLabel(rootParent).SetText("After that, it kills ".. Mod.Settings.armiesKilled.." additional troops. If all troops are killed, the territory turns neutral.");
 		end
 	end
+	UI.CreateLabel(rootParent).SetText("This mod adds fake discard orders, because Fizzer.");
 end
 
