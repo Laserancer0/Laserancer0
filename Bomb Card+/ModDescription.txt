@@ -1,0 +1,1 @@
+Adds more customization for bomb cards. A fake discard orders will happen in your order list, because Fizzer.
