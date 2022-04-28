@@ -1,5 +1,6 @@
 function Server_AdvanceTurn_Start (game,addNewOrder)
 	skippedBombs = {};
+	memory = {};
 	executed = false;
 end
 function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrder)	
@@ -37,7 +38,12 @@ end
 
 function PlayBombCard(game, order, addNewOrder)
 		local terrMod = WL.TerritoryModification.Create(order.TargetTerritoryID);
-		local armies = game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].NumArmies.NumArmies;
+		local armies;
+		if (memory[order.TargetTerritoryID] == nil) then
+			armies = game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].NumArmies.NumArmies;
+		else
+			armies = memory[order.TargetTerritoryID];
+		end
 		armies =armies - round(armies*Mod.Settings.killPercentage / 100 + Mod.Settings.armiesKilled);
 		if (armies < 1) then
 			terrMod.SetOwnerOpt = WL.PlayerID.Neutral;
@@ -45,5 +51,6 @@ function PlayBombCard(game, order, addNewOrder)
 		else
 			terrMod.SetArmiesTo = armies;
 		end
+		memory[order.TargetTerritoryID] = armies;
 		addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "Bomb card", {}, {terrMod}));
 end
