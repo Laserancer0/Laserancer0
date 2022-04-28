@@ -29,7 +29,7 @@ function Client_PresentSettingsUI(rootParent)
 			end
 		end
 	end
-	UI.CreateLabel(rootParent).SetText("This mod will create fake discard orders, thanks to Fizzer.");
+	UI.CreateLabel(rootParent).SetText("This mod will create fake discard orders.");
 
 end
 
