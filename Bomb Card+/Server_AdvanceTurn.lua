@@ -6,29 +6,24 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 	if(executed == false)then
 		if(order.proxyType == 'GameOrderPlayCardBomb')then
 			addNewOrder(WL.GameOrderDiscard.Create(order.PlayerID, order.CardInstanceID));
-			if (Mod.Settings.delayed == 1) then
-				skippedBombs[tablelength(skippedBombs)] = order;
+			if (Mod.Settings.delayed) then
+				skippedBombs[#skippedBombs+1] = order;
 			else
 				PlayBombCard(game, order, addNewOrder);
-			skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
 			end
+			skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
 		end
 	end
 end
 function Server_AdvanceTurn_End(game,addNewOrder)
 	if(executed == false) then
 		executed = true;
-		for _,order in pairs(skippedBombs)do
-			if(game.ServerGame.Game.PlayingPlayers[order.PlayerID].Team ~= game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].OwnerPlayerID].Team)then --isn't class programming neat?
+		for _, order in pairs(skippedBombs)do
+			if (game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].OwnerPlayerID == WL.PlayerID.Neutral or game.ServerGame.Game.PlayingPlayers[order.PlayerID].Team~=game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].OwnerPlayerID].Team or (game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].OwnerPlayerID].Team == -1 and game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].OwnerPlayerID ~= order.PlayerID)) then -- xD
 				PlayBombCard(game, order, addNewOrder);
 			end
 		end
 	end
-end
-function tablelength(T)
-	local count = 0;
-	for _ in pairs(T) do count = count + 1 end;
-	return count;
 end
 function round (input)
 	local wholePart = math.floor(input);
@@ -43,7 +38,7 @@ end
 function PlayBombCard(game, order, addNewOrder)
 		local terrMod = WL.TerritoryModification.Create(order.TargetTerritoryID);
 		local armies = game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].NumArmies.NumArmies;
-		armies = round(armies - armies*Mod.Settings.killPercentage / 100 - Mod.Settings.armiesKilled);
+		armies =armies - round(armies*Mod.Settings.killPercentage / 100 + Mod.Settings.armiesKilled);
 		if (armies < 1) then
 			terrMod.SetOwnerOpt = WL.PlayerID.Neutral;
 			terrMod.SetArmiesTo = 0;

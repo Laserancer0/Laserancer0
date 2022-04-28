@@ -4,8 +4,7 @@ function Client_SaveConfigureUI(alert)
 	if killPercentage < 0 or killPercentage > 100 then alert('The kill percentage must be set between 1 to 100'); end
     Mod.Settings.killPercentage = killPercentage;
 	
-	local delayed = delayedInput.GetValue();
-	if delayed < 0 or delayed > 1 then alert('Only values 0 and 1 are acceptable on "delayed" settings'); end
+	local delayed = delayedInput.GetIsChecked();
     Mod.Settings.delayed = delayed;
 	
 	local armiesKilled = armiesKilledInput.GetValue();
