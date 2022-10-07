@@ -22,13 +22,15 @@ function Server_AdvanceTurn_End(game,addNewOrder)
 		for _, order in pairs(skippedBombs) do
 			if (order.PlayerID~=nil) then
 				bomber = game.ServerGame.Game.PlayingPlayers[order.PlayerID];
-				bombedID = game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].OwnerPlayerID;
-				if (bombedID == WL.PlayerID.Neutral or bombedID == nil or game.ServerGame.Game.PlayingPlayers[bombedID] == nil) then
-					PlayBombCard(game, order, addNewOrder);
-				else 
-					bombed = game.ServerGame.Game.PlayingPlayers[bombedID];
-					if (bomber.Team~=bombed.Team or (bombed.Team == -1 and bombed.ID ~= order.PlayerID)) then
+				if (bomber ~= nil) then
+					bombedID = game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].OwnerPlayerID;
+					if (bombedID == WL.PlayerID.Neutral or bombedID == nil or game.ServerGame.Game.PlayingPlayers[bombedID] == nil) then
 						PlayBombCard(game, order, addNewOrder);
+					else 
+						bombed = game.ServerGame.Game.PlayingPlayers[bombedID];
+						if (bomber.Team~=bombed.Team or (bombed.Team == -1 and bombed.ID ~= order.PlayerID)) then
+							PlayBombCard(game, order, addNewOrder);
+						end
 					end
 				end
 			end
