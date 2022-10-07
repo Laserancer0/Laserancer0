@@ -19,9 +19,18 @@ end
 function Server_AdvanceTurn_End(game,addNewOrder)
 	if(executed == false) then
 		executed = true;
-		for _, order in pairs(skippedBombs)do
-			if (game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].OwnerPlayerID == WL.PlayerID.Neutral or game.ServerGame.Game.PlayingPlayers[order.PlayerID].Team~=game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].OwnerPlayerID].Team or (game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].OwnerPlayerID].Team == -1 and game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].OwnerPlayerID ~= order.PlayerID)) then -- xD
-				PlayBombCard(game, order, addNewOrder);
+		for _, order in pairs(skippedBombs) do
+			if (order.PlayerID~=nil) then
+				bomber = game.ServerGame.Game.PlayingPlayers[order.PlayerID];
+				bombedID = game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].OwnerPlayerID;
+				if (bombedID == WL.PlayerID.Neutral or bombedID == nil or game.ServerGame.Game.PlayingPlayers[bombedID] == nil) then
+					PlayBombCard(game, order, addNewOrder);
+				else 
+					bombed = game.ServerGame.Game.PlayingPlayers[bombedID];
+					if (bomber.Team~=bombed.Team or (bombed.Team == -1 and bombed.ID ~= order.PlayerID)) then
+						PlayBombCard(game, order, addNewOrder);
+					end
+				end
 			end
 		end
 	end
@@ -52,5 +61,5 @@ function PlayBombCard(game, order, addNewOrder)
 			terrMod.SetArmiesTo = armies;
 		end
 		memory[order.TargetTerritoryID] = armies;
-		addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "Bomb card", {}, {terrMod}));
+		addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "Bombs ".. game.Map.Territories[order.TargetTerritoryID].Name, {}, {terrMod}));
 end
