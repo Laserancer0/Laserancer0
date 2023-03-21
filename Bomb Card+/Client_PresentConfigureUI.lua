@@ -26,6 +26,10 @@ function Client_PresentConfigureUI(rootParent)
 	UI.CreateLabel(row3).SetText('Delayed: off = card happens at the beggining of the turn, on = card happens at the end of the turn.');
     delayedInput = UI.CreateCheckBox(row3)
 		.SetIsChecked(delayed);
+	local row4 = UI.CreateHorizontalLayoutGroup(vert);
+	UI.CreateLabel(row4).SetText('Do special units prevent territory from turning neutral after bombing?');
+    specialUnitsInput = UI.CreateCheckBox(row4)
+		.SetIsChecked(SpecialUnits);
 end
 
 	

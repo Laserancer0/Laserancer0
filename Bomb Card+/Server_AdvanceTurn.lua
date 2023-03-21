@@ -57,11 +57,19 @@ function PlayBombCard(game, order, addNewOrder)
 		end
 		armies =armies - round(armies*Mod.Settings.killPercentage / 100 + Mod.Settings.armiesKilled);
 		if (armies < 1) then
-			terrMod.SetOwnerOpt = WL.PlayerID.Neutral;
+			if (Mod.Settings.specialUnits ~= true or tablelength(game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].NumArmies.SpecialUnits) ==0) then
+				terrMod.SetOwnerOpt = WL.PlayerID.Neutral;
+			end
 			terrMod.SetArmiesTo = 0;
 		else
 			terrMod.SetArmiesTo = armies;
 		end
 		memory[order.TargetTerritoryID] = armies;
 		addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "Bombs ".. game.Map.Territories[order.TargetTerritoryID].Name, {}, {terrMod}));
+end
+
+function tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
 end

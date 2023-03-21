@@ -11,4 +11,7 @@ function Client_SaveConfigureUI(alert)
 
 	if armiesKilled < 0 or armiesKilled > 1000 then alert('Armies killed must be set between 0 to 1000'); end
     Mod.Settings.armiesKilled = armiesKilled;
+	local specialUnits = specialUnitsInput.GetIsChecked();
+
+	Mod.Settings.specialUnits = specialUnits;
 end

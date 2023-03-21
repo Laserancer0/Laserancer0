@@ -29,7 +29,11 @@ function Client_PresentSettingsUI(rootParent)
 			end
 		end
 	end
-	UI.CreateLabel(rootParent).SetText("If all troops are killed, targeted territory turns neutral. This mod will create fake discard orders.");
+	if (Mod.Settings.SpecialUnits) then
+		UI.CreateLabel(rootParent).SetText("If all troops are killed, targeted territory turns neutral, unless there is at least one special unit int hte territory. This mod will create fake discard orders.");
+	else
+		UI.CreateLabel(rootParent).SetText("If all troops are killed, targeted territory turns neutral. This mod will create fake discard orders.");
 
+	end
 end
 
